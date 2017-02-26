@@ -27,5 +27,21 @@ router.get('/', function (req, res) {
         res.json({ "status": 500, "message": error });
     });
 });
+router.get('/:id', function (req, res) {
+    models.patient.findOne({
+        where: {
+            id: req.params.id
+        }
+    }).then(function (patient) {
+        if (patient == null) {
+            res.status(404).json({ "status": 404, "patient": "No patient found" });
+        } else {
+            res.status(200).json({ "status": 200, "patient": patient });
+        }
+
+    }).catch(function (err) {
+        res.status(404).json({ "status": 404, "messge": "Nothing Found" });
+    });
+});
 
 module.exports = router;
