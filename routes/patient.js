@@ -20,7 +20,7 @@ router.post('/create', function (req, res) {
     });
 });
 router.get('/', function (req, res) {
-    models.patient.findAll().then(function (patient) {
+    models.patient.findAll({limit: 100}).then(function (patient) {
         // console.log(members)
         res.json({ "status": 200, "patient": patient });
     }).catch(function (error) {
@@ -43,5 +43,16 @@ router.get('/:id', function (req, res) {
         res.status(404).json({ "status": 404, "messge": "Nothing Found" });
     });
 });
-
+//delete method to remove a patient
+router.delete('/:id', function (req, res) {
+    models.patient.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then(function (patient) {
+        res.json({ "status": 200, "messge": "Patient Deleted" });
+    }).catch(function (err) {
+        res.json({ "status": 500, "messge": err });
+    });
+});
 module.exports = router;
